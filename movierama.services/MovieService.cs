@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using movierama.models;
 using movierama.repositories;
 
@@ -26,7 +25,7 @@ namespace movierama.services
             _voteService = voteService;
         }
 
-        public List<Movie> GetMoviesWithUserVote(int userId)
+        public IEnumerable<Movie> GetMoviesWithUserVote(int userId)
         {
             var movies = _movieRepository.GetAll();
             foreach (var movie in movies)
@@ -34,14 +33,22 @@ namespace movierama.services
                 var user = _userService.GetUser(movie.PostedByUserId);
                 movie.PostedBy = user;
 
-                var myVote = _voteService.GetMovieVoteForUser(movie.Id, userId);
-                movie.MyVote = myVote;
+                if (userId > 0)
+                {
+                    var myVote = _voteService.GetMovieVoteForUser(movie.Id, userId);
+                    movie.MyVote = myVote;
+                }
 
                 var votes = _voteService.GetMovieVotes(movie.Id);
                 movie.Votes = votes;
             }
 
             return movies;
+        }
+
+        public void Add(Movie movie)
+        {
+            _movieRepository.Add(movie);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace movierama.web.Models
     public class MoviesView
     {
         public IEnumerable<MovieView> Movies { get; set; }
+        public bool CanAddMovie { get; set; }
     }
 
     public class MovieView

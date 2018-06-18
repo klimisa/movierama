@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using movierama.models;
 
 namespace movierama.repositories
@@ -53,6 +52,11 @@ namespace movierama.repositories
         public List<Movie> GetAll()
         {
             return Movies;
+        }
+
+        public void Add(Movie movie)
+        {
+            Movies.Add(movie);
         }
     }
 }

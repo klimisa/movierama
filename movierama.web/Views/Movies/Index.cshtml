@@ -1,8 +1,7 @@
 ﻿@model MoviesView
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewData["Title"] = "Movies";
 }
 
 <div style="margin: 10px 0;">
@@ -10,171 +9,180 @@
     <a asp-action="Index" asp-route-orderBy="likes">Likes</a> |
     <a asp-action="Index" asp-route-orderBy="hates">Hates</a> |
     <a asp-action="Index" asp-route-orderBy="date">Date</a>
+    @if (Model.CanAddMovie)
+    {
+        <p style="float: right">
+            @Html.ActionLink("Add Movie", "Create", "Movies")
+        </p>
+    }
 </div>
 
-@foreach (var movie in Model.Movies)
-{
-    <div style="margin: 10px 0; padding: 10px; border: 1px black solid;">
-        <p>
-            Posted By
-            <a asp-action="Index" asp-route-postedBy="@movie.PostedBy.Id">
-                @if (movie.PostedByYou)
-                {
-                    <span> You </span>
-                }
-                else
-                {
-                    <span> @movie.PostedBy.Name </span>
-                }
-            </a>
-            @movie.TimePastSincePosted ago
-        </p>
-        <p>
-            @movie.Description
-        </p>
-        <div>
-            <div>
-                @if (movie.CanVote)
-                {
-                    if (movie.HasVotes)
+<div>
+    @foreach (var movie in Model.Movies)
+    {
+        <div style="margin: 10px 0; padding: 0 10px 10px; border: 1px black solid;">
+            <h3>@movie.Title</h3>
+            <p>
+                Posted By
+                <a asp-action="Index" asp-route-postedBy="@movie.PostedBy.Id">
+                    @if (movie.PostedByYou)
                     {
-                        if (!movie.HaveVoted || movie.Hate)
+                        <span> You </span>
+                    }
+                    else
+                    {
+                        <span> @movie.PostedBy.Name </span>
+                    }
+                </a>
+                @movie.TimePastSincePosted ago
+            </p>
+            <p>
+                @movie.Description
+            </p>
+            <div>
+                <div>
+                    @if (movie.CanVote)
+                    {
+                        if (movie.HasVotes)
                         {
+                            if (!movie.HaveVoted || movie.Hate)
+                            {
+                                using (Html.BeginForm("Like", "Movies",
+                                    new {movieId = movie.Id}, FormMethod.Post, false,
+                                    new {id = $"frmLLike_{movie.Id}", @style = "display: inline-block;"}))
+                                {
+                                    <a href="#" onclick="$(@Html.Raw($"'#frmLLike_{movie.Id}'")).submit();">
+                                        @movie.Likes
+                                        @if (movie.Likes > 1)
+                                        {
+                                            <span> likes</span>
+                                        }
+                                        else
+                                        {
+                                            <span> like</span>
+                                        }
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                @movie.Likes
+                                if (movie.Likes > 1)
+                                {
+                                    <span> likes</span>
+                                }
+                                else
+                                {
+                                    <span> like</span>
+                                }
+                            }
+                            <span>|</span>
+                            if (!movie.HaveVoted || movie.Like)
+                            {
+                                using (Html.BeginForm("Hate", "Movies",
+                                    new {movieId = movie.Id}, FormMethod.Post, false,
+                                    new {id = $"frmLHate_{movie.Id}", style = "display: inline-block;"}))
+                                {
+                                    <a href="#" onclick="$(@Html.Raw($"'#frmLHate_{movie.Id}'")).submit();">
+                                        @movie.Hates
+                                        @if (movie.Hates > 1)
+                                        {
+                                            <span> hates</span>
+                                        }
+                                        else
+                                        {
+                                            <span> hate</span>
+                                        }
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                @movie.Hates
+                                if (movie.Hates > 1)
+                                {
+                                    <span> hates</span>
+                                }
+                                else
+                                {
+                                    <span> hate</span>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <span>Be the first to vote for this movie: </span>
                             using (Html.BeginForm("Like", "Movies",
                                 new {movieId = movie.Id}, FormMethod.Post, false,
-                                new {id = $"frmLLike_{movie.Id}", @style = "display: inline-block;"}))
+                                new {id = $"frmL1Like_{movie.Id}", style = "display: inline-block;"}))
                             {
-                                <a href="#" onclick="$(@Html.Raw($"'#frmLLike_{movie.Id}'")).submit();">
-                                    @movie.Likes
-                                    @if (movie.Likes > 1)
-                                    {
-                                        <span> likes</span>
-                                    }
-                                    else
-                                    {
-                                        <span> like</span>
-                                    }
+                                <a href="#" onclick="$(@Html.Raw($"'#frmL1Like_{movie.Id}'")).submit();">
+                                    Like
                                 </a>
                             }
-                        }
-                        else
-                        {
-                            @movie.Likes
-                            if (movie.Likes > 1)
-                            {
-                                <span> likes</span>
-                            }
-                            else
-                            {
-                                <span> like</span>
-                            }
-                        }
-                        <span>|</span>
-                        if (!movie.HaveVoted || movie.Like)
-                        {
+                            <span> | </span>
                             using (Html.BeginForm("Hate", "Movies",
                                 new {movieId = movie.Id}, FormMethod.Post, false,
-                                new {id = $"frmLHate_{movie.Id}", style = "display: inline-block;"}))
+                                new {id = $"frmL1Hate_{movie.Id}", style = "display: inline-block;"}))
                             {
-                                <a href="#" onclick="$(@Html.Raw($"'#frmLHate_{movie.Id}'")).submit();">
-                                    @movie.Hates
-                                    @if (movie.Hates > 1)
-                                    {
-                                        <span> hates</span>
-                                    }
-                                    else
-                                    {
-                                        <span> hate</span>
-                                    }
+                                <a href="#" onclick="$(@Html.Raw($"'#frmL1Hate_{movie.Id}'")).submit();">
+                                    Hate
                                 </a>
                             }
                         }
+                    }
+                    else
+                    {
+                        if (movie.Likes > 1)
+                        {
+                            <span>@movie.Likes likes</span>
+                        }
                         else
                         {
-                            @movie.Hates
-                            if (movie.Hates > 1)
-                            {
-                                <span> hates</span>
-                            }
-                            else
-                            {
-                                <span> hate</span>
-                            }
+                            <span>@movie.Likes like</span>
+                        }
+                        <span>|</span>
+
+                        if (movie.Hates > 1)
+                        {
+                            <span>@movie.Hates hates</span>
+                        }
+                        else
+                        {
+                            <span>@movie.Hates hate</span>
                         }
                     }
-                    else
+                </div>
+            </div>
+            <div>
+                @if (movie.CanVote && movie.HaveVoted)
+                {
+                    if (movie.Like)
                     {
-                        <span>Be the first to vote for this movie: </span>
-                        using (Html.BeginForm("Like", "Movies",
-                            new {movieId = movie.Id}, FormMethod.Post, false,
-                            new {id = $"frmL1Like_{movie.Id}", style = "display: inline-block;"}))
-                        {
-                            <a href="#" onclick="$(@Html.Raw($"'#frmL1Like_{movie.Id}'")).submit();">
-                                Like
-                            </a>
-                        }
-                        <span> | </span>
+                        <span>You like this movie | </span>
                         using (Html.BeginForm("Hate", "Movies",
                             new {movieId = movie.Id}, FormMethod.Post, false,
-                            new {id = $"frmL1Hate_{movie.Id}", style = "display: inline-block;"}))
+                            new {id = $"frmRHate_{movie.Id}", style = "display: inline-block;"}))
                         {
-                            <a href="#" onclick="$(@Html.Raw($"'#frmL1Hate_{movie.Id}'")).submit();">
-                                Hate
+                            <a href="#" onclick="$(@Html.Raw($"'#frmRHate_{movie.Id}'")).submit();">
+                                Unlike
                             </a>
                         }
                     }
-                }
-                else
-                {
-                    if (movie.Likes > 1)
-                    {
-                        <span>@movie.Likes likes</span>
-                    }
                     else
                     {
-                        <span>@movie.Likes like</span>
-                    }
-                    <span>|</span>
-
-                    if (movie.Hates > 1)
-                    {
-                        <span>@movie.Hates hates</span>
-                    }
-                    else
-                    {
-                        <span>@movie.Hates hate</span>
+                        <span>You hate this movie | </span>
+                        using (Html.BeginForm("Like", "Movies",
+                            new {movieId = movie.Id}, FormMethod.Post, false,
+                            new {id = $"frmRLike_{movie.Id}", style = "display: inline-block;"}))
+                        {
+                            <a href="#" onclick="$(@Html.Raw($"'#frmRLike_{movie.Id}'")).submit();">
+                                Unhate
+                            </a>
+                        }
                     }
                 }
             </div>
         </div>
-        <div>
-            @if (movie.CanVote && movie.HaveVoted)
-            {
-                if (movie.Like)
-                 {
-                     <span>You like this movie | </span>
-                     using (Html.BeginForm("Hate", "Movies",
-                         new {movieId = movie.Id}, FormMethod.Post, false,
-                         new {id = $"frmRHate_{movie.Id}", style = "display: inline-block;"}))
-                     {
-                         <a href="#" onclick="$(@Html.Raw($"'#frmRHate_{movie.Id}'")).submit();">
-                             Unlike
-                         </a>
-                     }
-                 }
-                 else
-                 {
-                     <span>You hate this movie | </span>
-                     using (Html.BeginForm("Like", "Movies",
-                         new {movieId = movie.Id}, FormMethod.Post, false,
-                         new {id = $"frmRLike_{movie.Id}", style = "display: inline-block;"}))
-                     {
-                         <a href="#" onclick="$(@Html.Raw($"'#frmRLike_{movie.Id}'")).submit();">
-                             Unhate
-                         </a>
-                     }
-                 }
-            }
-        </div>
-    </div>
-}
+    }
+</div>

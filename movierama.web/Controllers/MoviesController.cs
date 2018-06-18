@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using movierama.models;
 using movierama.services;
 using movierama.web.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.ResultOperators.Internal;
 
 namespace movierama.web.Controllers
 {
@@ -25,10 +23,14 @@ namespace movierama.web.Controllers
             _voteService = voteService;
         }
 
+        public int CurrentUserId => HttpContext.User.Identity.IsAuthenticated
+            ? int.Parse(HttpContext.User.Identity.Name.Split('-')[0])
+            : 0;
+        
         // GET
         public IActionResult Index(int postedBy, string orderBy)
         {
-            var movies = _movieService.GetMoviesWithUserVote(3);
+            var movies = _movieService.GetMoviesWithUserVote(CurrentUserId);
             var moviesQ = movies
                 .Where(movie => postedBy > 0
                     ? movie.PostedByUserId == postedBy
@@ -52,7 +54,8 @@ namespace movierama.web.Controllers
                 Movies =
                     moviesQ
                         .ToList()
-                        .ToMoviesView()
+                        .ToMoviesView(CurrentUserId),
+                CanAddMovie = HttpContext.User.Identity.IsAuthenticated
             };
             return View(moviesView);
         }
@@ -61,7 +64,7 @@ namespace movierama.web.Controllers
         [HttpPost]
         public IActionResult Like(int movieId)
         {
-            _voteService.LikeMovie(movieId, 3);
+            _voteService.LikeMovie(movieId, CurrentUserId);
           return RedirectToAction(nameof(Index));
         }
         
@@ -69,23 +72,34 @@ namespace movierama.web.Controllers
         [HttpPost]
         public IActionResult Hate(int movieId)
         {
-            _voteService.HateMovie(movieId, 3);
+            _voteService.HateMovie(movieId, CurrentUserId);
             return RedirectToAction(nameof(Index));
         }
         
-        [Route("Movies/Add")]
-        [HttpPost]
-        public IActionResult Add(AddMovieView addMovieView)
+        // GET: Movies/Create
+        public IActionResult Create()
         {
-            
-            return RedirectToAction(nameof(Index));
+            return View();
+        }
+
+        // POST: Movies/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(AddMovieView addMovieView)
+        {
+            if (ModelState.IsValid)
+            {
+                _movieService.Add(addMovieView.ToMovie(CurrentUserId));
+                return RedirectToAction("Index");
+            }
+            return View(addMovieView);
         }
         
     }
 
     public static class MoviesExtensions
     {
-        public static IEnumerable<MovieView> ToMoviesView(this List<Movie> movies)
+        public static IEnumerable<MovieView> ToMoviesView(this List<Movie> movies, int userId)
         {
             var moviesView = new List<MovieView>();
             foreach (var movie in movies)
@@ -98,7 +112,7 @@ namespace movierama.web.Controllers
                     PostedBy = new UserView
                     {
                         Id = movie.PostedBy.Id,
-                        Name = movie.PostedBy.Name
+                        Name = movie.PostedBy.FullName
                     },
                     Likes = movie.Likes,
                     Hates = movie.Hates,
@@ -109,8 +123,8 @@ namespace movierama.web.Controllers
                     Like = movie.HaveVoted && movie.MyVote.Like,
                     Hate = movie.HaveVoted && !movie.MyVote.Like,
                     HaveVoted = movie.HaveVoted,
-                    CanVote = movie.PostedBy.Id != 3,
-                    PostedByYou = movie.PostedBy.Id == 3
+                    CanVote = userId > 0 && movie.PostedBy.Id != userId,
+                    PostedByYou = movie.PostedBy.Id == userId
                 };
 
                 moviesView.Add(movieView);
@@ -133,7 +147,19 @@ namespace movierama.web.Controllers
                 return string.Format("{0} {1}", age.Hours, age.Hours > 1 ? "hours" : "hour");
             }
 
-            return string.Format("{0} {1}", age.Minutes, age.Minutes > 1 ? "minutes" : "less than a minute");
+            return age.Minutes > 1 ? $"{age.Minutes} minutes" : "less than a minute";
+        }
+
+        public static Movie ToMovie(this AddMovieView addMovieView, int userId)
+        {
+            var movie = new Movie
+            {
+                Title = addMovieView.Title,
+                Description = addMovieView.Description,
+                PostedByUserId = userId,
+                PublishedDate = DateTime.Now
+            };
+            return movie;
         }
     }
 }

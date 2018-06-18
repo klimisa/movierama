@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\movierama.infrastructure\movierama.infrastructure.csproj" />
     <ProjectReference Include="..\movierama.models\movierama.models.csproj" />
     <ProjectReference Include="..\movierama.repositories\movierama.repositories.csproj" />
   </ItemGroup>

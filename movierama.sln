@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "movierama.repositories", "m
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "movierama.services", "movierama.services\movierama.services.csproj", "{7FF0A3BE-9436-4D62-9B2B-0F797EBF4C14}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "movierama.infrastructure", "movierama.infrastructure\movierama.infrastructure.csproj", "{AEEE5418-D8D8-4ECC-8F18-A192D295E0D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{7FF0A3BE-9436-4D62-9B2B-0F797EBF4C14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FF0A3BE-9436-4D62-9B2B-0F797EBF4C14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FF0A3BE-9436-4D62-9B2B-0F797EBF4C14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEEE5418-D8D8-4ECC-8F18-A192D295E0D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEEE5418-D8D8-4ECC-8F18-A192D295E0D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEEE5418-D8D8-4ECC-8F18-A192D295E0D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEEE5418-D8D8-4ECC-8F18-A192D295E0D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

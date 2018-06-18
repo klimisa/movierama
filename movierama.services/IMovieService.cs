@@ -5,6 +5,7 @@ namespace movierama.services
 {
     public interface IMovieService
     {
-        List<Movie> GetMoviesWithUserVote(int userId);
+        IEnumerable<Movie> GetMoviesWithUserVote(int userId);
+        void Add(Movie movie);
     }
 }

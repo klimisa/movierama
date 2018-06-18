@@ -5,5 +5,6 @@ namespace movierama.models
     public interface IMovieRepository
     {
         List<Movie> GetAll();
+        void Add(Movie movie);
     }
 }
