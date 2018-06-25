@@ -42,35 +42,55 @@ namespace movierama.services
             var vote = GetMovieVoteForUser(movieId, userId);
             if (vote == No.Vote)
             {
-                var newVote = new Vote
+                var newVote = new Vote(movieId, userId);
+                if (like)
                 {
-                    MovieId = movieId,
-                    UserId = userId,
-                    Like = like
-                };
+                    newVote.LikeMovie();
+                }
+                else
+                {
+                    newVote.HateMovie();
+                }
+                
                 _voteRepository.AddVote(newVote);
             }
             else
             {
-                vote.Like = like;
+                if (like)
+                {
+                    vote.LikeMovie();
+                }
+                else
+                {
+                    vote.HateMovie();
+                }
                 _voteRepository.UpdateVote(vote);    
             }
 
             var voteResult = GetMovieVotes(movieId);
             if (voteResult == No.Votes)
             {
-                var newVoteResult = new VoteResult
+                var newVoteResult = new VoteResult(movieId);
+                if (like)
                 {
-                    MovieId = movieId,
-                    Likes = like ? 1: 0,
-                    Hates = !like ? 1: 0
-                };
+                    newVoteResult.LikeMovie();
+                }
+                else
+                {
+                    newVoteResult.HateMovie();
+                }
                 _voteRepository.AddVoteResult(newVoteResult); 
             }
             else
             {
-                voteResult.Likes = like ? voteResult.Likes + 1 : voteResult.Likes - 1;
-                voteResult.Hates = !like ? voteResult.Hates + 1 : voteResult.Hates - 1;
+                if (like)
+                {
+                    voteResult.LikeMovie();
+                }
+                else
+                {
+                    voteResult.HateMovie();
+                }
                 _voteRepository.UpdateVoteResult(voteResult);
             }
         }

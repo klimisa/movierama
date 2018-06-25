@@ -8,16 +8,16 @@ namespace movierama.repositories
     {
         private static readonly List<Vote> Votes = new List<Vote>
         {
-            new Vote {MovieId = 1, UserId = 3, Like = true},
-            new Vote {MovieId = 2, UserId = 3, Like = false}
+            new Vote(3, 1, true),
+            new Vote(3, 2, false)
         };
 
         private static readonly List<VoteResult> VoteResults = new List<VoteResult>
         {
-            new VoteResult {MovieId = 1, Likes = 127, Hates = 4},
-            new VoteResult {MovieId = 2, Likes = 19, Hates = 24},
-            new VoteResult {MovieId = 3, Likes = 17, Hates = 1},
-            new VoteResult {MovieId = 4, Likes = 3, Hates = 2}
+            new VoteResult (1, 127, 4),
+            new VoteResult (2, 19, 24),
+            new VoteResult (3, 17, 1),
+            new VoteResult (4, 3, 2)
         };
 
         public Vote GetUserVote(int movieId, int userId)
@@ -40,7 +40,7 @@ namespace movierama.repositories
         {
             Votes.Add(newVote);
         }
-        
+
         public void UpdateVoteResult(VoteResult voteResult)
         {
             var existingVoteResult = GetMovieVoteResult(voteResult.MovieId);
