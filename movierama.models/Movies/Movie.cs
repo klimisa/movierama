@@ -1,5 +1,4 @@
 ﻿using System;
-using movierama.models.Account;
 using movierama.models.Voting;
 
 namespace movierama.models.Movies

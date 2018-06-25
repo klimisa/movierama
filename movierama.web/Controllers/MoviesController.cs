@@ -6,6 +6,7 @@ using movierama.models.Movies;
 using movierama.services;
 using movierama.web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace movierama.web.Controllers
 {
@@ -61,16 +62,14 @@ namespace movierama.web.Controllers
             return View(moviesView);
         }
 
-        [Route("Movies/Like")]
-        [HttpPost]
+        [Route("movies/{movieId}/like")]
         public IActionResult Like(int movieId)
         {
             _voteService.LikeMovie(movieId, CurrentUserId);
           return RedirectToAction(nameof(Index));
         }
         
-        [Route("Movies/Hate")]
-        [HttpPost]
+        [Route("movies/{movieId}/hate")]
         public IActionResult Hate(int movieId)
         {
             _voteService.HateMovie(movieId, CurrentUserId);

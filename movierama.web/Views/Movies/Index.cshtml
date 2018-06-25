@@ -47,22 +47,17 @@
                         {
                             if (!movie.HaveVoted || movie.Hate)
                             {
-                                using (Html.BeginForm("Like", "Movies",
-                                    new {movieId = movie.Id}, FormMethod.Post, false,
-                                    new {id = $"frmLLike_{movie.Id}", @style = "display: inline-block;"}))
-                                {
-                                    <a href="#" onclick="$(@Html.Raw($"'#frmLLike_{movie.Id}'")).submit();">
-                                        @movie.Likes
-                                        @if (movie.Likes > 1)
-                                        {
-                                            <span> likes</span>
-                                        }
-                                        else
-                                        {
-                                            <span> like</span>
-                                        }
-                                    </a>
-                                }
+                                <a asp-action="Like" asp-route-movieId="@movie.Id">
+                                    @movie.Likes
+                                    @if (movie.Likes > 1)
+                                    {
+                                        <span> likes</span>
+                                    }
+                                    else
+                                    {
+                                        <span> like</span>
+                                    }
+                                </a>
                             }
                             else
                             {
@@ -79,22 +74,17 @@
                             <span>|</span>
                             if (!movie.HaveVoted || movie.Like)
                             {
-                                using (Html.BeginForm("Hate", "Movies",
-                                    new {movieId = movie.Id}, FormMethod.Post, false,
-                                    new {id = $"frmLHate_{movie.Id}", style = "display: inline-block;"}))
-                                {
-                                    <a href="#" onclick="$(@Html.Raw($"'#frmLHate_{movie.Id}'")).submit();">
-                                        @movie.Hates
-                                        @if (movie.Hates > 1)
-                                        {
-                                            <span> hates</span>
-                                        }
-                                        else
-                                        {
-                                            <span> hate</span>
-                                        }
-                                    </a>
-                                }
+                                <a asp-action="Hate" asp-route-movieId="@movie.Id">
+                                    @movie.Hates
+                                    @if (movie.Hates > 1)
+                                    {
+                                        <span> hates</span>
+                                    }
+                                    else
+                                    {
+                                        <span> hate</span>
+                                    }
+                                </a>
                             }
                             else
                             {
@@ -112,23 +102,15 @@
                         else
                         {
                             <span>Be the first to vote for this movie: </span>
-                            using (Html.BeginForm("Like", "Movies",
-                                new {movieId = movie.Id}, FormMethod.Post, false,
-                                new {id = $"frmL1Like_{movie.Id}", style = "display: inline-block;"}))
-                            {
-                                <a href="#" onclick="$(@Html.Raw($"'#frmL1Like_{movie.Id}'")).submit();">
-                                    Like
-                                </a>
-                            }
+
+                            <a asp-action="Like" asp-route-movieId="@movie.Id">
+                                Like
+                            </a>
+
                             <span> | </span>
-                            using (Html.BeginForm("Hate", "Movies",
-                                new {movieId = movie.Id}, FormMethod.Post, false,
-                                new {id = $"frmL1Hate_{movie.Id}", style = "display: inline-block;"}))
-                            {
-                                <a href="#" onclick="$(@Html.Raw($"'#frmL1Hate_{movie.Id}'")).submit();">
-                                    Hate
-                                </a>
-                            }
+                            <a asp-action="Hate" asp-route-movieId="@movie.Id">
+                                Hate
+                            </a>
                         }
                     }
                     else
@@ -160,26 +142,16 @@
                     if (movie.Like)
                     {
                         <span>You like this movie | </span>
-                        using (Html.BeginForm("Hate", "Movies",
-                            new {movieId = movie.Id}, FormMethod.Post, false,
-                            new {id = $"frmRHate_{movie.Id}", style = "display: inline-block;"}))
-                        {
-                            <a href="#" onclick="$(@Html.Raw($"'#frmRHate_{movie.Id}'")).submit();">
-                                Unlike
-                            </a>
-                        }
+                        <a asp-action="Hate" asp-route-movieId="@movie.Id">
+                            Unlike
+                        </a>
                     }
                     else
                     {
                         <span>You hate this movie | </span>
-                        using (Html.BeginForm("Like", "Movies",
-                            new {movieId = movie.Id}, FormMethod.Post, false,
-                            new {id = $"frmRLike_{movie.Id}", style = "display: inline-block;"}))
-                        {
-                            <a href="#" onclick="$(@Html.Raw($"'#frmRLike_{movie.Id}'")).submit();">
-                                Unhate
-                            </a>
-                        }
+                        <a asp-action="Like" asp-route-movieId="@movie.Id">
+                            Unhate
+                        </a>
                     }
                 }
             </div>
