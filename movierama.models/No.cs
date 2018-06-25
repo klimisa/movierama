@@ -1,4 +1,6 @@
-﻿namespace movierama.models
+﻿using movierama.models.Voting;
+
+namespace movierama.models
 {
     public static class No
     {

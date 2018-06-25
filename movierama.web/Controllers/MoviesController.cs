@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using movierama.models;
+using movierama.models.Movies;
 using movierama.services;
 using movierama.web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -112,7 +113,7 @@ namespace movierama.web.Controllers
                     PostedBy = new UserView
                     {
                         Id = movie.PostedBy.Id,
-                        Name = movie.PostedBy.FullName
+                        Name = movie.PostedBy.Name
                     },
                     Likes = movie.Likes,
                     Hates = movie.Hates,

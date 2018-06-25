@@ -1,4 +1,5 @@
 ﻿using movierama.models;
+using movierama.models.Voting;
 using movierama.repositories;
 
 namespace movierama.services

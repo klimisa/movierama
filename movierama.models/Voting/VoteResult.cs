@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace movierama.models
+namespace movierama.models.Voting
 {
     public class VoteResult
     {
@@ -29,31 +29,27 @@ namespace movierama.models
         public void LikeMovie()
         {
             Likes += 1;
-            if (Likes < 0)
-            {
-                Likes = 0;
-            }
-            
-            Hates -= 1;
-            if (Likes < 0)
-            {
-                Likes = 0;
-            }
-            
+//            Hates -= 1;
+            Normalize();
         }
+
 
         public void HateMovie()
         {
             Hates += 1;
+//            Likes -= 1;
+            Normalize();
+        }
+        
+        private void Normalize()
+        {
             if (Likes < 0)
             {
                 Likes = 0;
             }
-            
-            Likes -= 1;
-            if (Likes < 0)
+            if (Hates < 0)
             {
-                Likes = 0;
+                Hates = 0;
             }
         }
     }

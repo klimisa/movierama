@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace movierama.models
+namespace movierama.models.Movies
 {
     public interface IMovieRepository
     {

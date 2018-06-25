@@ -1,6 +1,7 @@
 ﻿using System;
 using movierama.infrastructure.security;
 using movierama.models;
+using movierama.models.Account;
 using movierama.repositories;
 
 namespace movierama.services

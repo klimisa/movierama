@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using movierama.models;
+using movierama.models.Movies;
 
 namespace movierama.repositories
 {

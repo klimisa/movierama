@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace movierama.models
+namespace movierama.models.Voting
 {
     public class Vote
     {

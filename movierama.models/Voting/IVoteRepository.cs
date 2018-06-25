@@ -1,4 +1,4 @@
-﻿namespace movierama.models
+﻿namespace movierama.models.Voting
 {
     public interface IVoteRepository
     {

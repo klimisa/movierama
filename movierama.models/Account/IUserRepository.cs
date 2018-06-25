@@ -1,4 +1,4 @@
-﻿namespace movierama.models
+﻿namespace movierama.models.Account
 {
     public interface IUserRepository
     {

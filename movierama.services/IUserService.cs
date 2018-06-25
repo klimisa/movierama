@@ -1,4 +1,5 @@
 ﻿using movierama.models;
+using movierama.models.Account;
 
 namespace movierama.services
 {

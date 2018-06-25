@@ -1,13 +1,15 @@
 ﻿using System;
+using movierama.models.Account;
+using movierama.models.Voting;
 
-namespace movierama.models
+namespace movierama.models.Movies
 {
     public class Movie
     {
         public int Id { get; set; }
         
         public int PostedByUserId { get; set; }
-        public User PostedBy { get; set; }
+        public Publisher PostedBy { get; set; }
         
         public Vote MyVote { get; set; }
         public bool HaveVoted => MyVote != No.Vote;
