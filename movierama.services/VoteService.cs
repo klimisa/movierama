@@ -43,7 +43,7 @@ namespace movierama.services
             var vote = GetMovieVoteForUser(movieId, userId);
             if (vote == No.Vote)
             {
-                var newVote = new Vote(movieId, userId);
+                var newVote = new Vote(userId, movieId);
                 if (like)
                 {
                     newVote.LikeMovie();

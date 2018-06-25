@@ -29,19 +29,17 @@ namespace movierama.services
 
         public IEnumerable<Movie> GetMoviesWithUserVote(int userId)
         {
-            if (userId <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(userId));
-            }
-
             var movies = _movieRepository.GetAll();
             foreach (var movie in movies)
             {
                 var user = _userService.GetUser(movie.PostedByUserId);
                 movie.PostedBy = new Publisher(user.Id, user.FullName);
 
-                var myVote = _voteService.GetMovieVoteForUser(movie.Id, userId);
-                movie.MyVote = myVote;
+                if (userId > 0)
+                {
+                    var myVote = _voteService.GetMovieVoteForUser(movie.Id, userId);
+                    movie.MyVote = myVote;
+                }
 
                 var votes = _voteService.GetMovieVotes(movie.Id);
                 movie.Votes = votes;
